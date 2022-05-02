@@ -18,15 +18,19 @@ function App() {
   }
 
   function handleDelete(deletedQuestion) {
-    console.log(deletedQuestion);
     const updatedQuestions = questions.filter((question) => question.id !== deletedQuestion.id)
     setQuestions(updatedQuestions);
+  }
+
+  function handleUpdate(updatedQuestion) {
+    const updatedAnswers = questions.filter((question) => question.id === updatedQuestion.id)
+    setQuestions(updatedAnswers);
   }
 
   return (
     <main>
       <AdminNavBar onChangePage={setPage} />
-      {page === "Form" ? <QuestionForm onHandleNewQuestion={handleNewQuestion} /> : <QuestionList questions={questions} onHandleDelete={handleDelete}/>}
+      {page === "Form" ? <QuestionForm onHandleNewQuestion={handleNewQuestion} /> : <QuestionList questions={questions} onHandleDelete={handleDelete} onHandleUpdate={handleUpdate}/>}
     </main>
   );
 }
