@@ -1,6 +1,6 @@
 import React from "react";
 
-function QuestionItem({ question, onHandleUpdate }) {
+function QuestionItem({ question, onHandleDeleteClick }) {
   const { id, prompt, answers, correctIndex } = question;
 
   console.log(id, prompt);
@@ -11,18 +11,19 @@ function QuestionItem({ question, onHandleUpdate }) {
     </option>
   ));
 
-  const updateAnswer = (index) => {
+  const updateAnswer = (event) => {
+    console.log(event.target.value)
     fetch(`http://localhost:4000/questions/${question.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify ({
-        correctIndex: index,
+        correctIndex: event.target.value,
       })
     })
     .then((response) => response.json())
-    .then((updateItem) => onHandleUpdate(updateItem))
+    .then((updateItem) => console.log("Update Item", updateItem))
     }
 
   return (
@@ -31,9 +32,9 @@ function QuestionItem({ question, onHandleUpdate }) {
       <h5>Prompt: {prompt}</h5>
       <label>
         Correct Answer:
-        <select onChange={updateAnswer(index)} defaultValue={correctIndex}>{options}</select>
+        <select onChange={(event) => updateAnswer(event)} defaultValue={correctIndex}>{options}</select>
       </label>
-      <button>Delete Question</button>
+      <button onClick={() => onHandleDeleteClick(question)}>Delete Question</button>
     </li>
   );
 }

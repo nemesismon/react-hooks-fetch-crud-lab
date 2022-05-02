@@ -1,7 +1,7 @@
 import React from "react";
 import QuestionItem from "./QuestionItem";
 
-function QuestionList({ questions, onHandleDelete, onHandleUpdate }) {
+function QuestionList({ questions, onHandleDelete}) {
 
   function handleDeleteClick (question) {
     fetch(`http://localhost:4000/questions/${question.id}`, {
@@ -11,28 +11,19 @@ function QuestionList({ questions, onHandleDelete, onHandleUpdate }) {
     .then(() => onHandleDelete(question))
   }
 
-  const handleUpdateClick = (question) => {
+
+  const allQuestions = questions.map((question) => {
+
     return (
-      <div>
-      <QuestionItem question={question} onHandleUpdate={onHandleUpdate} />
-      </div>
-      )
-  }
+      <QuestionItem key={question.id} name={question.prompt} question={question} onHandleDeleteClick={handleDeleteClick} />
+    )
+  })
 
   return (
     <div>
     <section>
       <h1>Quiz Questions</h1>
-      {questions.map((question) => {
-        return (
-          <div key={question.id} name={question.prompt}>
-          <li>
-          {question.prompt}
-          <button onClick={() => handleDeleteClick(question)}>Delete Question</button>
-          <button onClick={() => handleUpdateClick(question)}>Update Answer</button>
-          </li>
-          </div>
-    )})}
+      {allQuestions}
     </section>
     </div>
   );
